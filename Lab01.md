@@ -73,12 +73,12 @@ Populate your new `private repository` with the contents that you have just clon
 ## Task 1.4:   
 Update your remote repository from the local repository on your laptop:
 ```
-echo "# CLOUD-COMPUTING-CLASS-2020" >> README.md
+echo "# CLOUD-COMPUTING-CLASS-2020-Lab1" >> README.md
 git init
 git add README.md
 git add Lab1/Lab1.guessnumber.py
 git commit -m "first commit"
-git remote add origin https://github.com/<username>/CLOUD-COMPUTING-CLASS-2020.git
+git remote add origin https://github.com/<username>/CLOUD-COMPUTING-CLASS-2020-Lab1.git
 git push -u origin master
 ```
 > change `<username>` for your Github account
@@ -114,8 +114,8 @@ It needs to have, at least, two files `README.md` with your responses to the abo
 ```json5
 {
   "authors": [
-    "FIRSTNAME1.LASTNAME1@est.fib.upc.edu",
-    "FIRSTNAME2.LASTNAME2@est.fib.upc.edu"
+    "FIRSTNAME1.LASTNAME1@accenture.com",
+    "FIRSTNAME2.LASTNAME2@accenture.com"
   ]
 }
 ```
