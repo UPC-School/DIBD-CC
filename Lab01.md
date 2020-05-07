@@ -31,16 +31,16 @@ You can also open a terminal and examine your new environment.
 Using the Anaconda terminal, some unix commands also work in MS-Windows:
 
 ```bash
-(CCBDA_UPC) C:\prompt> which python
-/cygdrive/c/Anaconda/envs/CCBDA_UPC/python
+(DIBC-CC) C:\prompt> which python
+/cygdrive/c/Anaconda/envs/DIBC-CC/python
 ```
 
-That answer means that your python interpreter is at `c:\Anaconda\envs\CCBDA_UPC\python`. You will get a similar response if you are using a unix OS.
+That answer means that your python interpreter is at `c:\Anaconda\envs\DIBC-CC\python`. You will get a similar response if you are using a unix OS.
 
 If you need to use the commands from that new environment you must make sure that the `PATH` variable (both windows and unix) contains the directory. To update that variable for windows. If your environment has a different name or it has been created in a different path change the command accordingly.
 
 ```bash
-SET PATH=%PATH%;c:\Anaconda\envs\CCBDA_UPC;c:\Anaconda\envs\CCBDA_UPC\Scripts;
+SET PATH=%PATH%;c:\Anaconda\envs\DIBC-CC;c:\Anaconda\envs\DIBC-CC\Scripts;
 ```
 
 [PyCharm](https://www.jetbrains.com/pycharm/) is a very popular [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) that will make your life much easier. It supports execution and debugging of Python, Python environments, code version control, it has a built-in terminal and all kinds of plugins. Moreover, it is [completely free for students](https://www.jetbrains.com/buy/classroom/?product=pycharm).
