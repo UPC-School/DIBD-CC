@@ -401,7 +401,7 @@ Before continuing this hands-on, make sure that you have correctly generated the
 
 Once your program works correctly, you can try finding another term of your interest.
 
-Q24: Add the code to `TwitterListener.py` and your comments to README.md.
+Q24: Add the code to `TwitterListener.py and your comments to README.md.
 
 <a name="Tasks25"/>
 
@@ -550,13 +550,7 @@ Create a program at `TwitterAnalyzer.py` that reads **only once** the `.json` fi
 **Q25: copy and paste the output of the program to `README.md`**
 
 
-
-
-
-
-
 **Q26: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
-
 
 # How to submit this assignment:
 
