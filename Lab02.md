@@ -6,6 +6,8 @@ In this Lab session, we are going to discuss the overall structure of a tweet an
    * [Task 2.1: Geting Started with NLTK](#NLTK)
    * [Task 2.2: Getting Started with `tweepy`](#tweepy)
    * [Task 2.3: Tweet pre-processing](#preproc)
+   * [Task 2.4: Realtime tweets API of Twitter](#Tasks24)
+   * [Task 2.5: Analyzing tweets - counting terms](#Tasks25)  
 
 <a name="Tasks"/>
 
@@ -320,12 +322,235 @@ With the previous essential tokenizer code, some particular types of tokens are 
 
 In this example, regular expressions are compiled with the flags re.VERBOSE, to ignore spaces in the regexp (see the multi-line emoticons regexp), and re.IGNORECASE to match both upper and lowercase text. The tokenize() function catches all the tokens in a string and returns them as a list. preprocess() uses tokenize() to pre-process the string: in this case, we only add a lowercasing feature for all the tokens that are not emoticons (e.g., :D doesn’t become :d).
 
+You may have noticed that some tweets appear incomplete because API methods is truncate to 140 characters, as needed. When this truncation occurs, the truncated attribute of the Status object will be True, and only entities that are fully contained within the available 140 characters range will be included in the entities attribute. It will also be discernible that the text attribute of the Status object is truncated as it will be suffixed with an ellipsis character, a space, and a shortened self-permalink URL to the Tweet.
+
+You can obtain the full text of a tweet by using the following function:
+
+```python
+def getTweetText(api, tweet):
+    status = api.get_status(tweet.id, tweet_mode="extended")
+    try:
+        return status.retweeted_status.full_text
+    except AttributeError:  # Not a Retweet
+        return  status.full_text
+```
+
 Keep track of the execution examining *one hundred different tweets* extracted using tweepy, as shown above. Print a list of the fifty most common words appearing in these tweets. 
 
 **Q23: Add the code to `Twitter_2.py` and your comments to `README.md`.**
 
 
-**Q24: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
+<a name="Tasks24"/>
+
+## Task 2.4: Real-time tweets API of Twitter
+
+We have worked with information that is already existing in Twitter. In case that we want to “keep the connection open”, and gather all the upcoming tweets about a particular event, the [Real-time tweets API](https://developer.twitter.com/en/docs/tweets/filter-realtime/overview) is what we need.
+
+The Real-time tweets APIs gives developers low latency access to Twitter’s global stream of Tweet data. Proper implementation of a streaming client pushes messages indicating that Tweets and other events have happened.
+
+Connecting to the real-time tweets API requires keeping a persistent HTTP connection open. In many cases, this involves thinking about your application differently than if you were interacting with the REST API. Visit the [Real-time tweets API](https://developer.twitter.com/en/docs/tweets/filter-realtime/overview) for more details about the differences between Realtime tweets and REST APIs.
+
+The real-time tweets API is one of the preferred ways of receiving a massive amount of data without exceeding the rate limits. If you intend to conduct singular searches, read user profile information, or post Tweets, consider using the REST APIs instead.
+
+We need to extend the `StreamListener()` class to customize the way we process the incoming data. We are going to base our explanation on a working example (from [Marco Bonzanini](https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/)) that gathers all the new tweets with the "Artificial Intelligence" content:
+
+```python
+import os
+import tweepy
+from tweepy import OAuthHandler
+from tweepy import Stream
+from tweepy.streaming import StreamListener
+
+class MyListener(StreamListener):
+
+    def on_data(self, data):
+        try:
+            with open('ArtificialIntelligenceTweets.json', 'a') as f:
+                f.write(data)
+                return True
+        except BaseException as e:
+            print("Error on_data: %s" % str(e))
+        return True
+
+    def on_error(self, status):
+        print(status)
+        return True
+
+consumer_key = os.environ['CONSUMER_KEY']
+consumer_secret = os.environ['CONSUMER_SECRET']
+access_token = os.environ['ACCESS_TOKEN']
+access_secret = os.environ['ACCESS_SECRET']
+
+auth = OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_secret)
+
+twitter_stream = Stream(auth, MyListener())
+twitter_stream.filter(track=['ArtificialIntelligence'])
+```
+
+The core of the streaming logic is implemented in the `MyListener` class, which extends `StreamListener` and overrides two methods: `on_data()` and `on_error()`.
+
+These are handlers that are triggered when new data is coming through, or the API throws an error. If the problem is that we have been rate limited by the Twitter API, we need to wait before we can use the service again.
+
+When data becomes available `on_data()` method is invoked. That function stores the data inside the  `ArtificialIntelligenceTweets.json` file. Each line of that file corresponds to a single tweet, in the JSON format. You can use the command `wc -l ArtificialIntelligenceTweets.json` from a Unix shell to check how many tweets you’ve gathered.
+
+Before continuing this hands-on, make sure that you have correctly generated the `.json` file.
+
+Once your program works correctly, you can try finding another term of your interest.
+
+<a name="Tasks25"/>
+
+## Task 2.5:  Analyzing tweets - Counting terms
+
+We can leave the previous program running in the background fetching tweets while we write `TwitterAnalyzer.py`, on a different Python file, our first exploratory analysis: a simple word count. We can, therefore, observe which are the most commonly used terms in the dataset.
+
+Let's then go and read the file with all tweets to be sure that everything is correct:
+
+```python
+import json
+
+with open('ArtificialIntelligenceTweets.json','r') as json_file:
+         for line in json_file:
+             tweet = json.loads(line)
+             print(tweet["text"])
+```
+
+We are now ready to start to tokenize all these tweets:
+
+```python
+import json
+
+with open('ArtificialIntelligenceTweets.json', 'r') as f:
+    line = f.readline()
+    tweet = json.loads(line)
+    print(json.dumps(tweet, indent=4))
+```
+Now, if we want to process all our tweets, previously saved on file:
+
+```python
+with open('ArtificialIntelligenceTweets.json', 'r') as f:
+    for line in f:
+        tweet = json.loads(line)
+        tokens = preprocess(tweet['text'])
+        print(tokens)
+```
+Remember that `preprocess` has been defined in the previous Lab session in order to capture Twitter-specific aspects of the text, such as #hashtags, @-mentions and URLs.:
+
+```python
+import re
+
+emoticons_str = r"""
+    (?:
+        [:=;] # Eyes
+        [oO\-]? # Nose (optional)
+        [D\)\]\(\]/\\OpP] # Mouth
+    )"""
+
+regex_str = [
+    emoticons_str,
+    r'<[^>]+>',  # HTML tags
+    r'(?:@[\w_]+)',  # @-mentions
+    r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)",  # hash-tags
+    r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+',  # URLs
+    r'[^0-9\(\s\.\,\!]+', #UTF-8 words with non-English chars included
+]
+
+tokens_re = re.compile(r'('+'|'.join(regex_str)+')', re.VERBOSE | re.IGNORECASE)
+emoticon_re = re.compile(r'^'+emoticons_str+'$', re.VERBOSE | re.IGNORECASE)
+
+def tokenize(s):
+    return tokens_re.findall(s)
+
+def preprocess(s, lowercase=False):
+    tokens = tokenize(s)
+    if lowercase:
+        tokens = [token if emoticon_re.search(token) else token.lower() for token in tokens]
+    return tokens
+ ```
+In order to keep track of the frequencies while we process the tweets, we can use `collections.Counter()` which internally is a dictionary (term: count) with some useful methods like `most_common()`:
+
+ ```python
+import operator
+import json
+from collections import Counter
+
+fname = 'ArtificialIntelligenceTweets.json'
+with open(fname, 'r') as f:
+    count_all = Counter()
+    for line in f:
+        tweet = json.loads(line)
+        # Create a list with all the terms
+        terms_all = [term for term in preprocess(tweet['text'])]
+        # Update the counter
+        count_all.update(terms_all)
+    print(count_all.most_common(5))
+
+```
+As you can see, the above code produces words (or tokens) that are stop words. Given the nature of our data and our tokenization, we should also be careful with all the punctuation marks and with terms like `RT` (used for re-tweets) and `via` (used to mention the original author), which are not in the default stop-word list.
+
+```python
+import nltk
+from nltk.corpus import stopwords
+nltk.download("stopwords") # download the stopword corpus on our computer
+import string
+
+punctuation = list(string.punctuation)
+stop = stopwords.words('english') + punctuation + ['rt', 'via', 'RT']
+
+```
+
+We can now substitute the variable `terms_all` in the first example with something like:
+
+```python
+import operator
+import json
+from collections import Counter
+
+fname = 'ArtificialIntelligenceTweets.json'
+with open(fname, 'r') as f:
+    count_all = Counter()
+    for line in f:
+        tweet = json.loads(line)
+        # Create a list with all the terms
+        terms_stop = [term for term in preprocess(tweet['text']) if term not in stop]
+        count_all.update(terms_stop)
+    for word, index in count_all.most_common(5):
+        print ('%s : %s' % (word, index))
+```
+
+Besides stop-word removal, we can further customize the list of terms/tokens of our interest.
+For instance, if we want to count *hashtags* only by using:
+
+```python
+terms_hash = [term for term in preprocess(tweet['text'])
+              if term.startswith('#')]
+```
+In the case that we are interested in only counting terms, no hashtags and no mentions:
+
+```python
+terms_only = [term for term in preprocess(tweet['text'])
+              if term not in stop and
+              not term.startswith(('#', '@'))]
+```
+> Mind the double brackets (( )) at `startswith()`. It takes a tuple (not a list).
+
+Although we do not consider it in this Lab session, there are other convenient NLTK functions. For instance, to put things in context, some analysis examines sequences of two terms. In this case, we can use `bigrams()` function that takes a list of tokens and produces a list of tuples using adjacent tokens.
+
+Create a program at `TwitterAnalyzer.py` that reads **only once** the `.json` file generated by the listener process and prompts:
+
+- a list of the top ten most frequent tokens
+- a list of the top ten most frequent hashtags
+- a list of the top ten most frequent terms, skipping mentions and hashtags.
+
+**Q25: copy and paste the output of the program to `README.md`**
+
+
+
+
+
+
+
+**Q26: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
 
 
 # How to submit this assignment:
