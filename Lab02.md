@@ -203,6 +203,7 @@ Tweepy provides the convenient `Cursor` interface to iterate through different t
 ```python
 # we use 1 to limit the number of tweets we are reading 
 # and we only access the `text` of the tweet
+print('Timeline')
 for status in tweepy.Cursor(api.home_timeline).items(1):
     print(status.text) 
 ```
@@ -211,6 +212,7 @@ The `status` variable is an instance of the `Status()` class: a friendly wrapper
 ```python
 import json
 
+print('Timeline')
 for status in tweepy.Cursor(api.home_timeline).items(1):
     print(json.dumps(status._json, indent=2))
     
@@ -218,14 +220,16 @@ for status in tweepy.Cursor(api.home_timeline).items(1):
 What if we wanted to have a list of 10 of our followers (friends who follow you)?
  
 ```python
-for follower in tweepy.Cursor(api.friends).items(1):
+print('Followers')
+for follower in tweepy.Cursor(api.friends).items(10):
     print(json.dumps(follower._json, indent=2))
 
 ```
 And how about a list of some of our tweets?
 
 ```python
-for tweet in tweepy.Cursor(api.user_timeline).items(1):
+print('Tweets')
+for tweet in tweepy.Cursor(api.user_timeline).items(10):
     print(json.dumps(tweet._json, indent=2))
 ```    
 As a conclusion, notice that using `tweepy` we can quickly collect all the tweet information and store it in JSON format, reasonably easy to convert into different data models (many storage systems provide import feature).
