@@ -1,20 +1,19 @@
 # Lab session #2: Doors in the Cloud
 In this Lab session, we are going to discuss the overall structure of a tweet and how to pre-process the text before going into a more interesting analysis in the next Lab session. In particular, we are going to see how tokenization, while being a well-understood problem, can get tricky dealing with Twitter data. Before this, we need to install A Python Development Environment which will be very helpful for this and future sessions.
 
-* [Pre-lab howemork 2](#Prelab)
-   * [Homework 2.1: Registering Our App on Twitter](#Homework1)
 * [Tasks for Lab session #2](#Tasks)
+   * [Task 2.0: Registering Our App on Twitter](#Register)
    * [Task 2.1: Geting Started with NLTK](#NLTK)
    * [Task 2.2: Getting Started with `tweepy`](#tweepy)
    * [Task 2.3: Tweet pre-processing](#preproc)
 
-<a name="Prelab"/>
+<a name="Tasks"/>
 
-#  Pre-lab homework 2
+#  Tasks for Lab session #2
 
-<a name="Homework1"/>
+<a name="Register"/>
 
-## Homework 2.1: Registering Our App on Twitter
+## Task 2.0: Registering Our App on Twitter
 Cloud applications are characterized by an increased focus on user participation and content creation, but also by a profound interaction and interconnection of applications sharing content from different types of services to integrate multiple systems. This scenario is possible, without a doubt,  thanks to the rise of “Application Programming Interfaces” (API). 
 
 An API, or **Application Programming Interface**, provides a way for computer systems to interact with each other. There are many types of APIs. Every programming language has a built-in API that it is used to write programs. For instance, you have studied in previous courses that operating systems themselves have APIs used by applications to interact with files or display text on the screen.
@@ -31,13 +30,11 @@ There are four primary identifiers we need to have to start an OAuth workflow: c
 
 The first step in this assignment is registering your app on Twitter. In particular, you need to point your browser to http://apps.twitter.com, log-in to Twitter and enroll a new application. You will receive a **Consumer Key** and a **Consumer secret**.  From the configuration page "Keys and Access Token" of your app, you can also obtain the **Access Token** and an **Access Token Secret**. Save that information to perform the following Lab task.
 
-> **Warning**: these are application settings should always be kept private. Do not push the credentials to the git repository. You can use the environment variables, amongst other methods, to provide the configuration data to the applications.
+> **Warning**: these are application settings should **always be kept private**. Do not push the credentials to the git repository. You can use the environment variables, amongst other methods, to provide the configuration data to the applications.
 
 Note that you need a Twitter account to log in, create an app, and get these credentials.
 
-<a name="Tasks"/>
 
-#  Tasks for Lab session #2
 
 <a name="NLTK"/>
 
