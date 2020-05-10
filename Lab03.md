@@ -14,6 +14,11 @@ This Lab assignment is built on top of the previous ones to discuss a basis for 
 
 ## Task 3.1: Detach your storage
 
+If our Twitter listener stops working we don't want to loose the data captured.
+We may also want to have several listeners running at the same time and keep all their data stored to be analyzed.
+
+S3 provides an unexpensive permanent storage that can coneniently be accessed by any other AWS component.
+
 Install boto3 to access the AWS functionalities from Python.
 
 ````bash
