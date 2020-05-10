@@ -278,8 +278,6 @@ print(word_tokenize(tweet))
 ```
 You might notice some peculiarities of Twitter that a general-purpose English tokenizer such as the one from NLTK can't capture: @-mentions, emoticons, URLs, and #hash-tags stay unrecognized as single tokens. Right?
 
-Using some code borrowed from [Marco Bonzanini](https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/) we could consider these aspects of the language (A former student of this course, [Cédric Bhihe](https://www.linkedin.com/in/cedricbhihe/), suggested [this alternative code](CedricTokenizer.py)).  
-
 ```python
 import re
  
@@ -292,15 +290,11 @@ emoticons_str = r"""
  
 regex_str = [
     emoticons_str,
-    r'<[^>]+>', # HTML tags
-    r'(?:@[\w_]+)', # @-mentions
-    r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)", # hash-tags
-    r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+', # URLs
- 
-    r'(?:(?:\d+,?)+(?:\.?\d+)?)', # numbers
-    r"(?:[a-z][a-z'\-_]+[a-z])", # words with - and '
-    r'(?:[\w_]+)', # other words
-    r'(?:\S)' # anything else
+    r'<[^>]+>',  # HTML tags
+    r'(?:@[\w_]+)',  # @-mentions
+    r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)",  # hash-tags
+    r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+',  # URLs
+    r'[^0-9\(\s\.\,\!]+', #UTF-8 words with non-English chars included
 ]
     
 tokens_re = re.compile(r'('+'|'.join(regex_str)+')', re.VERBOSE | re.IGNORECASE)
@@ -317,6 +311,7 @@ def preprocess(s, lowercase=False):
  
 tweet = 'RT @JordiTorresBCN: just an example! :D http://JordiTorres.Barcelona #masterMEI'
 print(preprocess(tweet))
+print(preprocess(tweet, True))
 ```
 
 As you can see, @-mentions, URLs, and #hash-tags are now individual tokens. This tokenizer gives you a general idea of how you can tokenize twitter text using regular expressions (regexp), which is a common choice for this type of problem. 
@@ -325,11 +320,10 @@ With the previous essential tokenizer code, some particular types of tokens are 
 
 In this example, regular expressions are compiled with the flags re.VERBOSE, to ignore spaces in the regexp (see the multi-line emoticons regexp), and re.IGNORECASE to match both upper and lowercase text. The tokenize() function catches all the tokens in a string and returns them as a list. preprocess() uses tokenize() to pre-process the string: in this case, we only add a lowercasing feature for all the tokens that are not emoticons (e.g., :D doesn’t become :d).
 
-Keep track of the execution examining ten different tweets extracted using tweepy, as shown above. In this initial exercise using Twitter, if you don't want to have extra problems with *special characters* filter tweets *in the English language*.
+Keep track of the execution examining *one hundred different tweets* extracted using tweepy, as shown above. Print a list of the fifty most common words appearing in these tweets. 
 
 **Q23: Add the code to `Twitter_2.py` and your comments to `README.md`.**
 
-We are now ready for next Lab session where we will be mining streaming Twitter data.
 
 **Q24: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
 
