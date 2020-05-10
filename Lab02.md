@@ -401,6 +401,8 @@ Before continuing this hands-on, make sure that you have correctly generated the
 
 Once your program works correctly, you can try finding another term of your interest.
 
+Q24: Add the code to `TwitterListener.py` and your comments to README.md.
+
 <a name="Tasks25"/>
 
 ## Task 2.5:  Analyzing tweets - Counting terms
