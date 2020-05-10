@@ -322,7 +322,7 @@ With the previous essential tokenizer code, some particular types of tokens are 
 
 In this example, regular expressions are compiled with the flags re.VERBOSE, to ignore spaces in the regexp (see the multi-line emoticons regexp), and re.IGNORECASE to match both upper and lowercase text. The tokenize() function catches all the tokens in a string and returns them as a list. preprocess() uses tokenize() to pre-process the string: in this case, we only add a lowercasing feature for all the tokens that are not emoticons (e.g., :D doesn’t become :d).
 
-You may have noticed that some tweets appear incomplete because API methods is truncate to 140 characters, as needed. When this truncation occurs, the truncated attribute of the Status object will be True, and only entities that are fully contained within the available 140 characters range will be included in the entities attribute. It will also be discernible that the text attribute of the Status object is truncated as it will be suffixed with an ellipsis character, a space, and a shortened self-permalink URL to the Tweet.
+You may have noticed that some tweets appear incomplete because API methods provide backwards compatibility and truncate the text to 140 characters, as needed. When this truncation occurs, the truncated attribute of the Status object will be True, and only entities that are fully contained within the available 140 characters range will be included in the entities attribute. It will also be discernible that the text attribute of the Status object is truncated as it will be suffixed with an ellipsis character, a space, and a shortened self-permalink URL to the Tweet.
 
 You can obtain the full text of a tweet by using the following function:
 
