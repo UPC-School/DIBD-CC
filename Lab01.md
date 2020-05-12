@@ -87,15 +87,19 @@ It is better that you manage git by hand. Once you become familiar with git you 
 ## Task 1.5:
 Update the `README.md` file including all the information about your group (member's name and email addresses).
 ## Task 1.6:
-Invite `angeltoribio-UPC-BCN` and your lab. session partner to your remote private repository as a collaborator using the  `settings` button (use 'Triage' for the teacher and 'Admin' access to your partner).
+Invite `angeltoribio-UPC-BCN` and your lab. session partner to your remote private repository as a collaborator using the  `settings` button.
 ## Task 1.7:
 Create an EC2 instance at AWS. Login and pull down all the contents of your GitHub repository to make an exact clone by using `git clone` command.
 ## Task 1.8:
 Execute the program `Lab1.guessnumber.py` in your AWS instance. Take a screenshot of the terminal window that are you using as proof.
-Include that screenshot in your local repository, on your laptop, with the name `Lab1.AWSterminal.png`.
-Update your `README.md` file to make that screenshot appear.
+Include that screenshot in your local repository, on your laptop, with the name `Lab1.AWSterminal.png`. Update your `README.md` file to make that screenshot appear  using
+
+````html
+<p align="center"><img src="./images/Lab1.AWSterminal.png" alt="AWS terminal" title="AWS terminal"/></p>
+`````
+
 ## Task 1.9:
-Update your remote GitHub repository with the updated `README.md`and the new file `Lab1.AWSterminal.png` using the `git`commands `add`, `commit` and `push`.
+Update your **remote** GitHub repository with the updated `README.md`and the new file `Lab1.AWSterminal.png` using the `git`commands `add`, `commit` and `push`.
 ## Task 1.10:
 Create an S3 bucket and synchronize your repository there. Take a screenshot of the browser window showing your S3 bucket. Include that screenshot in your local repository, on your laptop, with the name `Lab1.S3Bucket.png`.
 Update your `README.md` file to make that screenshot appear.
