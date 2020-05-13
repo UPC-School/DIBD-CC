@@ -164,7 +164,7 @@ The **IAM role** with an **IAM policy** that grants your web app permission to p
 
 4. Next, select the **JSON** tab and paste the contents of the file `iam_policy.json` that you will find at the extra-file folder of the repository.
 
-5. For Policy Name, enter **gsg-signup-policy**.
+5. For Policy Name, enter **shopping-list-policy**.
 
 6. Choose **Create Policy**.
 
@@ -182,15 +182,15 @@ Create an IAM role and attach the policy to it.
 
 4. On the **Attach permissions policies** page, attach the following policies.
 
-    - **gsg-signup-policy** – The policy that you created earlier.
-    <p align="center"><img src="./images/Lab04-2.png " alt="gsg-signup-polic" title="gsg-signup-polic"/></p>
+    - **shopping-list-policy** – The policy that you created earlier.
+    <p align="center"><img src="./images/Lab04-2.png " alt="shopping-list-policy" title="shopping-list-policy"/></p>
 
     - **AWSElasticBeanstalkWebTier** – Elastic Beanstalk provided role that allows the instances in your environment to upload logs to Amazon S3.
     <p align="center"><img src="./images/Lab04-3.png " alt="AWSElasticBeanstalkWebTier" title="AWSElasticBeanstalkWebTier"/></p>
 
     To locate policies quickly, type part of the policy name in the filter box. Select both policies and then choose **Next Step**.
 
-5. For Role name, enter **gsg-signup-role**.
+5. For Role name, enter **shopping-list-role**.
 
 6. Choose **Create role**.
 
@@ -202,11 +202,11 @@ For more information on permissions, see [http://docs.aws.amazon.com/elasticbean
 
 2. Choose **Add user**.
 
-3. As a user name enter **gsg-signup-user** and check *"Programmatic access"* as *Access type*.
+3. As a user name enter **shopping-list-user** and check *"Programmatic access"* as *Access type*.
 
 4. Choose **Next: Permissions**
 
-5. Select the pane *"Attach existing policies directly"*, find **"gsg-signup-policy"** and add a checkmark. Do the same with **AWSElasticBeanstalkFullAccess**.
+5. Select the pane *"Attach existing policies directly"*, find **"shopping-list-policy"** and add a checkmark. Do the same with **AWSElasticBeanstalkFullAccess**.
 
 6. Choose **Next: Tags** and **Next: Review** where you should be seeing that your new user has programmatic access and it's attached to the previously selected managed policies.
 
@@ -214,7 +214,6 @@ For more information on permissions, see [http://docs.aws.amazon.com/elasticbean
 
 8. Copy the values of **Access key ID** and **Secret access key** or use **Download .csv** and save it in a safe place.
 
-<a name="Tasks43"/>
 
 #### Task 5.2.2: Create a DynamoDB Table
 Our signup app uses a DynamoDB table to store the contact information that users submit.
@@ -502,7 +501,7 @@ Write your answers in the `README.md` file for this session.
 
 # How to submit this assignment:
 
-Create a **new and private** repo named *https://github.com/YOUR-ACCOUNT-NAME/CLOUD-COMPUTING-CLASS-2020-Lab6* and invite your Lab. session partner and `angeltoribio-UPC-BCN`.
+Create a **new and private** repo named *https://github.com/YOUR-ACCOUNT-NAME/CLOUD-COMPUTING-CLASS-2020-Lab5* and invite your Lab. session partner and `angeltoribio-UPC-BCN`.
 
 It needs to have, at least, two files `README.md` with your responses to the above questions and `authors.json` with both members email addresses:
 
@@ -517,6 +516,6 @@ It needs to have, at least, two files `README.md` with your responses to the abo
 
 Make sure that you have updated your local GitHub repository (using the `git`commands `add`, `commit` and `push`) with all the files generated during this session. 
 
-**Before the deadline**, all team members shall push their responses to their private **CLOUD-COMPUTING-CLASS-2020-Lab6** repository.
+**Before the deadline**, all team members shall push their responses to their private **CLOUD-COMPUTING-CLASS-2020-Lab5** repository.
 
 
