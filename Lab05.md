@@ -276,26 +276,31 @@ Click on the tab `API Gateway`, as shown in the above screen capture, to obtain 
 
 ### Create a static website
 
-Create a new AWS S3 bucket. Uncheck all the properties below. 
+Create a new AWS S3 bucket "static-page-team00" (use your team number) at Ireland region. Uncheck all the properties below and acknowledge that you understand that the contentos of the bucket will be of public access.
  
  <p align="center"><img src="./images/Lab06-S3-public-access.png" alt="S3 public access" title="S3 public access"/></p>
  
-Use the tags:
-
-- Cost-center = laboratory
-- Project = dibdcc serverless
 
 Download and edit the file [`script.js`](Lambda-example/script.js) and replace `apiUrl = 'https://YOUR-API-HOST/test/serverless-controller';` with the API Endpoint URL without adding any query string parameter.
-  
+
+`````javascript
+(function ($) {
+    apiUrl = 'https://YOUR-API-HOST/test/serverless-controller';
+    tableName = 'shopping-list';
+....
+`````
+
+
 Open the bucket Properties pane, choose `Static Website Hosting`, and do the following:
 
 - Select: Use this bucket to host a website.
 
 - In the Index Document box, type index.html.
 
+- Find Endpoint (something lik http://static-page-team00.s3-website-eu-west-1.amazonaws.com/) and write it down.
+
 - Choose Save to save the website configuration.
 
-- Write down the Endpoint `http://YOUR-BUCKET-URL`
 
 In the Properties pane for the bucket, choose Permissions and then choose Bucket Policy.
 
