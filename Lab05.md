@@ -146,13 +146,12 @@ Check how many EC2 instances are running and, once they are ready, use the ELB U
 **Q514.** How are you going to end this section regarding the use of AWS resources?
 
 ### Task 5.2: Amazon DynamoDB
-We are going to use **Amazon DynamoDB**, a NoSQL database service, to store the contact information that users submit. DynamoDB is a schema-less database, so you need to specify only a primary key attribute. Let us use the email field as a key for each register.
-
+We are going to use **Amazon DynamoDB**, a NoSQL database service, to store the contact information that users submit. DynamoDB is a schema-less database, so you need to specify only a primary key attribute.
 
 #### Task 5.2.1: Create an IAM Policy, Role and User to run the application
 
 Next, you need to create a **IAM User** that will be granted with **only** the permissions that are strictly required to run your application. It is very important to grant the most restrictive set of permissions in case your application is compromised.
-The **IAM role** with an **IAM policy** that grants your web app permission to put items into your DynamoDB table. You will apply the role to the EC2 instances that run your application when you create an AWS Elastic Beanstalk environment.
+The **IAM role** with an **IAM policy** that grants your web app permission to put items into your DynamoDB table. You will apply the role to the EC2 instances that run your application when executed by the Lambda function.
 
 ##### To create the IAM policy
 
@@ -162,7 +161,21 @@ The **IAM role** with an **IAM policy** that grants your web app permission to p
 
 3. Choose **Create policy**.
 
-4. Next, select the **JSON** tab and paste the contents of the file `iam_policy.json` that you will find at the extra-file folder of the repository.
+4. Next, select the **JSON** tab and paste
+
+````json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": "dynamodb:*",
+      "Resource": "*"
+    }
+  ]
+}
+````
 
 5. For Policy Name, enter **shopping-list-policy**.
 
@@ -176,25 +189,20 @@ Create an IAM role and attach the policy to it.
 
 2. Choose **Create role**.
 
-3. On the **AWS service** tab, select **EC2** service, and again **EC2** to allow EC2 instances to call AWS services on your behalf. Hit **Next:Permissions**.
-
-    <p align="center"><img src="./images/Lab04-1.png " alt="AWS service" title="AWS service"/></p>
+3. On the **Choose a use case** section, select **Lambda**. Hit **Next:Permissions**.
 
 4. On the **Attach permissions policies** page, attach the following policies.
 
     - **shopping-list-policy** – The policy that you created earlier.
-    <p align="center"><img src="./images/Lab04-2.png " alt="shopping-list-policy" title="shopping-list-policy"/></p>
 
-    - **AWSElasticBeanstalkWebTier** – Elastic Beanstalk provided role that allows the instances in your environment to upload logs to Amazon S3.
-    <p align="center"><img src="./images/Lab04-3.png " alt="AWSElasticBeanstalkWebTier" title="AWSElasticBeanstalkWebTier"/></p>
+    - **AWSLambdaRole** – Allows the lambda functions in your environment to upload logs to Amazon S3.
+
 
     To locate policies quickly, type part of the policy name in the filter box. Select both policies and then choose **Next Step**.
 
 5. For Role name, enter **shopping-list-role**.
 
 6. Choose **Create role**.
-
-For more information on permissions, see [http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html) in the AWS Elastic Beanstalk Developer Guide.
 
 ##### To create the IAM User
 
@@ -216,7 +224,7 @@ For more information on permissions, see [http://docs.aws.amazon.com/elasticbean
 
 
 #### Task 5.2.2: Create a DynamoDB Table
-Our signup app uses a DynamoDB table to store the contact information that users submit.
+Our shopping list app uses a DynamoDB table to store the items that users submit.
 
 ##### To create a DynamoDB table
 
@@ -228,7 +236,7 @@ Our signup app uses a DynamoDB table to store the contact information that users
 
 4. For Table name, type **shopping-list**.
 
-5. For the `Primary key`, type `email`. Choose **Create**.
+5. For the `Primary key`, type `id`. Choose **Create**.
 
 Use the tags:
 
@@ -249,12 +257,7 @@ The advantage of architecting a solution this way is that you don't need to prov
 
 Go to the AWS Lambda console [https://eu-west-1.console.aws.amazon.com/lambda/](https://eu-west-1.console.aws.amazon.com/lambda/) and create a new function from the blueprint `microservice-http-endpoint-python` and name it `serverless-controller`. Create a new role from AWS policy templates and name it `serverless-controller-role`. The role needs to have `Simple microservice permissions - DynamoDB` permission.
 
-For the **API Gateway trigger** section create a new API that is `Open`, which means that your API endpoint is publicly available and can be invoked by all users. Name it `serverless-controller-API`. Select `default` as the deployment stage.
-
-Use the tags:
-
-- Cost-center = laboratory
-- Project = dibdcc serverless
+For the **API Gateway trigger** section "create an API" type "HTTP API" with security "Open", which means that your API endpoint is publicly available and can be invoked by all users. In "Additional settings" verify that it is named `serverless-controller-API` and has `default` as the deployment stage. Check the "Cross-origin resource sharing (CORS)" option.
 
 You need to keep the Python code that the blueprint provides. 
 
