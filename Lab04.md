@@ -69,6 +69,8 @@ Q311: Add the code to `TwitterListenerS3.py and your comments to README.md. Add 
 
 We can now move the listener to the Cloud.
 
+https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:879370021840:applications~StreamData-IO-Twitter-Search
+
 
 **Q35: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
 
