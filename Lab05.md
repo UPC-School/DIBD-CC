@@ -158,7 +158,7 @@ We are going to use **Amazon DynamoDB**, a NoSQL database service, to store the 
 
 4. For Table name, type **shopping-list**.
 
-5. For the `Primary key`, type `id`. Choose **Create**.
+5. For the `Primary key`, type `thingid`. Choose **Create**.
 
 Use the tags:
 
