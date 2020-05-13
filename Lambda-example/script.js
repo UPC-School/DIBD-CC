@@ -26,7 +26,7 @@
         // Call API Gateway POST Item
         $.ajax({
             url: apiUrl,
-            type: 'post',
+            type: 'POST',
             contentType: 'text/plain',
             data: JSON.stringify({TableName: tableName, Item: {thingid: {S: thingid}}}),
             crossDomain: true,
