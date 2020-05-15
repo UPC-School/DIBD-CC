@@ -1,5 +1,6 @@
 # Lab session #4: Moving to the cloud
 
+# D R A F T!!!!!!
 
 This Lab assignment is built on top of the previous ones to discuss a basis for extracting appealing terms from a dataset of tweets while we “keep the connection open” and gather all the upcoming tweets about a particular event.
 
