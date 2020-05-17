@@ -8,7 +8,7 @@ In this Lab session, we are going to discuss the overall structure of a tweet an
    * [Task 2.3: Tweet pre-processing](#preproc)
    * [Task 2.4: Realtime tweets API of Twitter](#Tasks24)
    * [Task 2.5: Analyzing tweets - counting terms](#Tasks25)
-   * [Task 2.6: Raw access to a REST API](#Tasks26)
+   * [Task 2.6: Raw access to a REST API](#Tasks26) OPTIONAL
 
 <a name="Tasks"/>
 
