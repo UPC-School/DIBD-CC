@@ -692,11 +692,11 @@ for flight in api_response['data']:
             flight['arrival']['iata']))
 `````
 
-**Q26: List the flights, copy the output in your `README.md`, flying from Madrid to somewhere else that, at the moment of your program execution, have not arrived yet. What have you modified in the program above?
+**Q26: List the flights, copy the output in your `README.md`, flying from Madrid to somewhere else that, at the moment of your program execution, have not arrived yet. What have you modified in the program above?**
 
-**Q27: List the flights, copy the output in your `README.md`, arriving in Barcelona, at the moment of your program execution, that have not yet landed. What have you modified in the program above?
+**Q27: List the flights, copy the output in your `README.md`, arriving in Barcelona, at the moment of your program execution, that have not yet landed. What have you modified in the program above?**
 
-**Q28: How many flights went from Madrid to Barcelona, and Barcelona to Madrid, the day that you executed the program? Write your response in `README.md`. What have you modified in the program above?
+**Q28: How many flights went from Madrid to Barcelona, and Barcelona to Madrid, the day that you executed the program? Write your response in `README.md`. What have you modified in the program above?**
 
 **Q29: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
 
