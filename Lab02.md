@@ -7,7 +7,8 @@ In this Lab session, we are going to discuss the overall structure of a tweet an
    * [Task 2.2: Getting Started with `tweepy`](#tweepy)
    * [Task 2.3: Tweet pre-processing](#preproc)
    * [Task 2.4: Realtime tweets API of Twitter](#Tasks24)
-   * [Task 2.5: Analyzing tweets - counting terms](#Tasks25)  
+   * [Task 2.5: Analyzing tweets - counting terms](#Tasks25)
+   * [Task 2.6: Raw access to a REST API](#Tasks26)
 
 <a name="Tasks"/>
 
@@ -550,7 +551,154 @@ Create a program at `TwitterAnalyzer.py` that reads **only once** the `.json` fi
 **Q25: copy and paste the output of the program to `README.md`**
 
 
-**Q26: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
+<a name="Tasks26"/>
+
+## Task 2.6:  Raw access to a REST API
+
+Go to `https://aviationstack.com/` and get a free API key. It will only be valid for 500 requests but enough for this exercise. You can access the API documentation at `https://aviationstack.com/documentation`.
+
+If you type the following line in your browser (replace `THE_KEY_YOU_HAVE_OBTAINED` by the API key you have just obtained) you will obtain the following JSON result
+
+```
+http://api.aviationstack.com/v1/flights?access_key=THE_KEY_YOU_HAVE_OBTAINED&dep_iata=MAD
+```
+
+Result:
+
+`````json
+{"pagination":{"limit":100,"offset":0,"count":100,"total":200},"data":[{"flight_date":"2020-05-17","flight_status":"scheduled","departure":{"airport":"Barajas","timezone":"Europe\/Madrid","iata":"MAD","icao":"LEMD","terminal":"4S","gate":null,"delay":null,"scheduled":"2020-05-17T22:20:00+00:00","estimated":"2020-05-17T22:20:00+00:00","actual":null,"estimated_runway":null,.....
+
+`````
+
+If we format the output, it starts to make a bit more sense. It replies with 100 entries, out of 199, with a list of flights offering information on the departure and arrival airports and times, the airline running the flight, information on the aircraft, and whether the flight info is live.
+
+````json
+{
+    "pagination": {
+        "limit": 100,
+        "offset": 0,
+        "count": 100,
+        "total": 199
+    },
+    "data": [
+        {
+            "flight_date": "2020-05-17",
+            "flight_status": "scheduled",
+            "departure": {
+                "airport": "Barajas",
+                "timezone": "Europe/Madrid",
+                "iata": "MAD",
+                "icao": "LEMD",
+                "terminal": "4S",
+                "gate": null,
+                "delay": null,
+                "scheduled": "2020-05-17T22:00:00+00:00",
+                "estimated": "2020-05-17T22:00:00+00:00",
+                "actual": null,
+                "estimated_runway": null,
+                "actual_runway": null
+            },
+            "arrival": { },
+            "airline": { },
+            "flight": { },
+            "aircraft": null,
+            "live": null
+        }
+    ]
+}
+````
+
+Create a file named ``.env`` and write the API key as shown:
+
+````
+AVIATION_STACK=b1e0e97d7......f50aff94
+````
+
+Activate the Python environment and install two packages. ```python-decouple``` is used to conveniently manage several ways of storing your programs configuration. ``requests`` is used to issue HTTP requests as a web browser would do.
+
+``````bash
+_$ pip install python-decouple
+_$ pip install requests
+``````
+
+Let's now create the web browser functionality into a python script. Create a file named ```flights.py``` with the content below. `requests.get` issues the same request that you typed in your browser. The variable params contains the URL parameters. `config('AVIATION_STACK')` obtains the value of your API key from the `.env` file or from the unix environment, in case there is no such file.
+
+`````python
+import requests
+import json
+from decouple import config
+
+params = {
+    'access_key': config('AVIATION_STACK'),
+    'dep_iata': 'MAD'
+}
+
+api_result = requests.get('http://api.aviationstack.com/v1/flights', params)
+api_response = api_result.json()
+
+for flight in api_response['data']:
+    if flight['live'] is not None:
+        if  flight['live']['is_ground'] is False:
+            print(json.dumps(flight))
+`````
+
+Out of all the received entries, the program selects the ones with live information. It provides the GPS coordinates, altitude, and more information on the airplain currently flying.
+
+````json
+            "live": {
+                "updated": "2020-05-17T14:38:54+00:00",
+                "latitude": 15.31,
+                "longitude": -68.28,
+                "altitude": 13106.4,
+                "direction": 234,
+                "speed_horizontal": 822.288,
+                "speed_vertical": 0,
+                "is_ground": false
+            }
+````
+
+To avoid using the 500 requests in no time, we are going to store the response in a file named `flights.json`. The program tries to read that file, if it does not exist it gets the data from the API endpoint. You can delete the `flighs.json` to obtain fresh data.
+
+The program also creates a more human readable output.
+
+`````python
+import requests
+import json
+from decouple import config
+
+params = {
+    'access_key': config('AVIATION_STACK'),
+    'dep_iata': 'MAD'
+}
+
+try:
+    with open('flights.json','r') as fd:
+        api_response = json.load(fd.read())
+except:
+    api_result = requests.get('http://api.aviationstack.com/v1/flights', params)
+    api_response = api_result.json()
+    with open('flights.json','w') as fd:
+        fd.write(json.dumps(api_response, indent=4))
+
+for flight in api_response['data']:
+    if flight['live'] is not None:
+        if  flight['live']['is_ground'] is False:
+            print('%s flight %s from %s (%s) to %s (%s) is in the air.' % (
+            flight['airline']['name'],
+            flight['flight']['iata'],
+            flight['departure']['airport'],
+            flight['departure']['iata'],
+            flight['arrival']['airport'],
+            flight['arrival']['iata']))
+`````
+
+**Q26: List the flights, copy the output in your `README.md`, flying from Madrid to somewhere else that, at the moment of your program execution, have not arrived yet. What have you modified in the program above?
+
+**Q27: List the flights, copy the output in your `README.md`, arriving in Barcelona, at the moment of your program execution, that have not yet landed. What have you modified in the program above?
+
+**Q28: How many flights went from Madrid to Barcelona, and Barcelona to Madrid, the day that you executed the program? Write your response in `README.md`. What have you modified in the program above?
+
+**Q29: How long have you been working on this session? What have been the main difficulties you have faced and how have you solved them?** Add your answers to `README.md`.
 
 # How to submit this assignment:
 
