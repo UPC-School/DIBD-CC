@@ -415,7 +415,7 @@ Let's then go and read the file with all tweets to be sure that everything is co
 ```python
 import json
 
-with open('ArtificialIntelligenceTweets.json','rU') as json_file:
+with open('ArtificialIntelligenceTweets.json','r') as json_file:
          for line in json_file:
              tweet = json.loads(line)
              print(tweet["text"])
@@ -426,7 +426,7 @@ We are now ready to start to tokenize all these tweets:
 ```python
 import json
 
-with open('ArtificialIntelligenceTweets.json', 'rU') as f:
+with open('ArtificialIntelligenceTweets.json', 'r') as f:
     line = f.readline()
     tweet = json.loads(line)
     print(json.dumps(tweet, indent=4))
@@ -434,8 +434,8 @@ with open('ArtificialIntelligenceTweets.json', 'rU') as f:
 Now, if we want to process all our tweets, previously saved on file:
 
 ```python
-with open('ArtificialIntelligenceTweets.json', 'rU') as f:
-    for line in f:
+with open('ArtificialIntelligenceTweets.json', 'r') as f:
+    for line in f.readlines():
         tweet = json.loads(line)
         tokens = preprocess(tweet['text'])
         print(tokens)
@@ -481,9 +481,9 @@ import json
 from collections import Counter
 
 fname = 'ArtificialIntelligenceTweets.json'
-with open(fname, 'rU') as f:
+with open(fname, 'r') as f:
     count_all = Counter()
-    for line in f:
+    for line in f.readlines():
         tweet = json.loads(line)
         # Create a list with all the terms
         terms_all = [term for term in preprocess(tweet['text'])]
@@ -513,13 +513,14 @@ import json
 from collections import Counter
 
 fname = 'ArtificialIntelligenceTweets.json'
-with open(fname, 'rU') as f:
+with open(fname, 'r') as f:
     count_all = Counter()
-    for line in f:
-        tweet = json.loads(line)
+    for line in f.readlines():
+        if len(line)>0:
+            tweet = json.loads(line)
         # Create a list with all the terms
-        terms_stop = [term for term in preprocess(tweet['text']) if term not in stop]
-        count_all.update(terms_stop)
+            terms_stop = [term for term in preprocess(tweet['text']) if term not in stop]
+            count_all.update(terms_stop)
     for word, index in count_all.most_common(5):
         print ('%s : %s' % (word, index))
 ```
