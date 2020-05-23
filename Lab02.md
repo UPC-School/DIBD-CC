@@ -415,7 +415,7 @@ Let's then go and read the file with all tweets to be sure that everything is co
 ```python
 import json
 
-with open('ArtificialIntelligenceTweets.json','r') as json_file:
+with open('ArtificialIntelligenceTweets.json','rU') as json_file:
          for line in json_file:
              tweet = json.loads(line)
              print(tweet["text"])
@@ -426,7 +426,7 @@ We are now ready to start to tokenize all these tweets:
 ```python
 import json
 
-with open('ArtificialIntelligenceTweets.json', 'r') as f:
+with open('ArtificialIntelligenceTweets.json', 'rU') as f:
     line = f.readline()
     tweet = json.loads(line)
     print(json.dumps(tweet, indent=4))
@@ -434,7 +434,7 @@ with open('ArtificialIntelligenceTweets.json', 'r') as f:
 Now, if we want to process all our tweets, previously saved on file:
 
 ```python
-with open('ArtificialIntelligenceTweets.json', 'r') as f:
+with open('ArtificialIntelligenceTweets.json', 'rU') as f:
     for line in f:
         tweet = json.loads(line)
         tokens = preprocess(tweet['text'])
@@ -481,7 +481,7 @@ import json
 from collections import Counter
 
 fname = 'ArtificialIntelligenceTweets.json'
-with open(fname, 'r') as f:
+with open(fname, 'rU') as f:
     count_all = Counter()
     for line in f:
         tweet = json.loads(line)
@@ -513,7 +513,7 @@ import json
 from collections import Counter
 
 fname = 'ArtificialIntelligenceTweets.json'
-with open(fname, 'r') as f:
+with open(fname, 'rU') as f:
     count_all = Counter()
     for line in f:
         tweet = json.loads(line)
